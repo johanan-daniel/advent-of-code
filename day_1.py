@@ -1,9 +1,8 @@
+from collections import Counter
 import heapq
+from typing import List
 
-list1 = [3,4,2,1,3,3]
-list2 = [4,3,5,3,9,3]
-
-def get_total_dist(list1, list2):
+def get_total_dist(list1: List[int], list2: List[int]) -> int:
   heapq.heapify(list1)
   heapq.heapify(list2)
 
@@ -16,3 +15,20 @@ def get_total_dist(list1, list2):
     total_dist += dist
 
   return total_dist
+
+def parse_input_file(filename: str, list_1: List[int], list_2: List[int]) -> List[List[int]]:
+  with open(filename, 'r') as file:
+    for file_line in file:
+      line = file_line.strip()
+      split = line.split('   ')
+      list_1.append(int(split[0]))
+      list_2.append(int(split[1]))
+
+
+FILENAME = "day_1_input.txt"
+list_1 = []
+list_2 = []
+
+parse_input_file(FILENAME, list_1, list_2)
+total = get_total_dist(list_1, list_2)
+print(total)
