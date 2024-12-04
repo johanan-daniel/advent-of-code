@@ -2,21 +2,27 @@ from collections import Counter
 import heapq
 from typing import List
 
-def get_total_dist(list1: List[int], list2: List[int]) -> int:
-  heapq.heapify(list1)
-  heapq.heapify(list2)
+"""
+Part 1:
+- parse numbers into two separate lists per column
+- sort each list
+- for each item from both lists:
+  - calculate distance of two nums
+  - add to total
+- return total
 
-  total_dist = 0
-  while list1 and list2:
-    num1 = heapq.heappop(list1)
-    num2 = heapq.heappop(list2)
-    
-    dist = abs(num1 - num2)
-    total_dist += dist
+Part 2:
+- init hashmap
+- init total to 0
+- loop over each num in list2:
+  - count frequneecy in hashmap
+- loop over each num in list1:
+  - multiply by freq (or 0)
+  - add onto total
+- return total
+"""
 
-  return total_dist
-
-def parse_input_file(filename: str, list_1: List[int], list_2: List[int]) -> List[List[int]]:
+def parse_input_file(filename: str, list_1: List[int], list_2: List[int]):
   with open(filename, 'r') as file:
     for file_line in file:
       line = file_line.strip()
@@ -24,11 +30,42 @@ def parse_input_file(filename: str, list_1: List[int], list_2: List[int]) -> Lis
       list_1.append(int(split[0]))
       list_2.append(int(split[1]))
 
+def get_total_dist(list1: List[int], list2: List[int]) -> int:
+  total_dist = 0
+  for i in range(len(list1)):
+    num1 = list1[i]
+    num2 = list2[i]
+    
+    dist = abs(num1 - num2)
+    total_dist += dist
+
+  return total_dist
+
+def get_similarity_score(list1: List[int], list2: List[int]) -> int:
+  hashmap = {}
+  total = 0
+  
+  for num in list2:
+    hashmap[num] = hashmap.get(num, 0) + 1
+  
+  for num in list1:
+    prod = num * hashmap.get(num, 0)
+    total += prod
+    
+  return total
 
 FILENAME = "day_1_input.txt"
 list_1 = []
 list_2 = []
 
 parse_input_file(FILENAME, list_1, list_2)
-total = get_total_dist(list_1, list_2)
-print(total)
+
+# part 1
+list_1.sort()
+list_2.sort()
+part1 = get_total_dist(list_1, list_2)
+print("part 1:", part1)
+
+# part 2
+part2 = get_similarity_score(list_1, list_2)
+print('part 2:', part2)
