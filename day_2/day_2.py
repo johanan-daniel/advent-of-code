@@ -19,7 +19,7 @@ Part 2:
 """
 
 load_dotenv()
-base_path = (os.getenv('BASE_PATH') or "") + "/day_2/"
+base_path = (os.getenv('BASE_PATH') or "") + "day_2/"
 INPUT_FILE = base_path + "day_2_input.txt"
 EXAMPLE_FILE = base_path + "day_2_example.txt"
 

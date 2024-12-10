@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
-base_path = (os.getenv('BASE_PATH') or "") + "/day_3/"
+base_path = (os.getenv('BASE_PATH') or "") + "day_3/"
 INPUT_FILE = base_path + "day_3_input.txt"
 EXAMPLE_FILE_1 = base_path + "day_3_example.txt"
 EXAMPLE_FILE_2 = base_path + "day_3_example_2.txt"
