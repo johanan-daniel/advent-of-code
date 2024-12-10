@@ -22,6 +22,18 @@ def parse_input_file(filename: str):
             
     return [rules, pages_to_produce]
 
-rules, pages = parse_input_file(EXAMPLE_FILE)
+rules, pages_to_produce = parse_input_file(EXAMPLE_FILE)
 print(rules)
-print(pages)
+print(pages_to_produce)
+
+"""
+- somehow order pages based on rules
+- loop over pages_to_proudce:
+    - check if prereqs are met
+    - update prereq
+
+- topological sort?
+
+- using hashmap, make a directed graph of nodes for each?
+- then basically just topological sort using graph
+"""
