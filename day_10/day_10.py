@@ -7,8 +7,8 @@ init hashmap of sets
 - each value is a set to store the coords of all 9s reachable from each
 init count
 
-dfs(row, col, trailhead, visited, last_val):
-    if visited or out of bounds or not 1 + last_val:
+dfs(row, col, trailhead, last_val):
+    if out of bounds or not 1 + last_val:
         return
     
     if 9:
@@ -17,14 +17,17 @@ dfs(row, col, trailhead, visited, last_val):
             add to set at hashmap[trailhead]
         return
     
-    add to visited
     dfs on neighbors (with current as last_val)
-    # remove from visited
 
 loop over each cell:
     if trailhead:
-        init visited
-        start dfs with row, col, trailhead coords, visited, and last set to -1
+        start dfs with row, col, trailhead coords, and last set to -1
+        
+- a visited set is not needed because in order to advance, the current value must be 1 + the last
+- also the only time count is added if that summit has not been added to the corresponding trailhead set yet
+- therefore, since the order is maintained and the count is controlled by a set, there is no need for a visited set
+    - the same coords may be visited if a trail branches and then merges, but that should not affect runtime that much and
+        since the count is controlled with a set, there is no chance of duplicate counts
 """
 
 from dotenv import load_dotenv
@@ -52,34 +55,38 @@ def main(part: int):
     hashmap = defaultdict(set)
     TRAILHEAD = 0
     SUMMIT = 9
-    count = 0
+    num_unique = 0
+    num_paths = 0
     
-    def dfs(row: int, col:int , trailhead: tuple, visited: set[tuple], last_val: int):
-        nonlocal count
+    def dfs(row: int, col:int , trailhead: tuple, last_val: int):
+        nonlocal num_unique, num_paths
         
-        if ((row, col) in visited
-            or row < 0 or col < 0 or row >= num_rows or col >= num_cols
+        if (row < 0 or col < 0 or row >= num_rows or col >= num_cols
             or matrix[row][col] != last_val + 1):
             return
         
         if matrix[row][col] == SUMMIT:
+            num_paths += 1
+            
             if (row, col) not in hashmap[trailhead]:
                 hashmap[trailhead].add((row, col))
-                count += 1
+                num_unique += 1
             return
 
-        dfs(row - 1, col, trailhead, visited, matrix[row][col])
-        dfs(row + 1, col, trailhead, visited, matrix[row][col])
-        dfs(row, col - 1, trailhead, visited, matrix[row][col])
-        dfs(row, col + 1, trailhead, visited, matrix[row][col])
+        dfs(row - 1, col, trailhead, matrix[row][col])
+        dfs(row + 1, col, trailhead, matrix[row][col])
+        dfs(row, col - 1, trailhead, matrix[row][col])
+        dfs(row, col + 1, trailhead, matrix[row][col])
     
     for row in range(num_rows):
         for col in range(num_cols):
             if matrix[row][col] == TRAILHEAD:
-                visited = set()
-                dfs(row, col, (row, col), visited, -1)
+                dfs(row, col, (row, col), -1)
     
-    return count
+    return num_unique if part == 1 else num_paths
 
 part_1_res = main(part = 1)
 print('part 1:', part_1_res)
+
+part_2_res = main(part = 2)
+print('part 2:', part_2_res)
