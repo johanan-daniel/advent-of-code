@@ -47,5 +47,43 @@ def part_1():
     
     return count
 
+"""
+Total solution time: 39 mins
+
+50
+
+-68
+-30
+-48
+"""
+def part_2():
+    count = 0
+    DIGITS = 100
+
+    start_pos = 50
+    pos = start_pos
+
+    for rotation in rotations_as_int:
+        # pos += rotation
+        
+        # if pos < 0 or pos > 100:
+        #     print("additional", pos, rotation)
+        #     count += 1
+        
+        # pos %= DIGITS
+
+        delta = -1 if rotation < 0 else 1
+
+        for _ in range(abs(rotation)):
+            pos = (pos + delta) % DIGITS
+
+            if pos == 0:
+                count += 1
+    
+    return count
+
 part_1_res = part_1()
 print('part 1:', part_1_res)
+
+part_2_res = part_2()
+print('part 2:', part_2_res)
