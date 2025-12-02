@@ -31,8 +31,6 @@ split_input = parse_input_file(INPUT_FILE)
 rotations_as_int = convert_rotations_to_int(split_input)
 
 def part_1():
-    # print(split_input)
-    # print(rotations_as_int)
     count = 0
     DIGITS = 100
 
@@ -64,14 +62,6 @@ def part_2():
     pos = start_pos
 
     for rotation in rotations_as_int:
-        # pos += rotation
-        
-        # if pos < 0 or pos > 100:
-        #     print("additional", pos, rotation)
-        #     count += 1
-        
-        # pos %= DIGITS
-
         delta = -1 if rotation < 0 else 1
 
         for _ in range(abs(rotation)):
